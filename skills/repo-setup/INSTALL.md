@@ -52,6 +52,10 @@ python3 "$SKILL_DIR/scripts/bootstrap.py" /absolute/new-app --recipe react-web -
 
 Audit only reads bounded evidence and prints JSON; it never runs unknown project
 scripts. Plans do not write. Apply writes scaffold files, not dependencies.
+Check `complete_inventory` and per-file `error`/`errors` in audit JSON: malformed
+declarations return a partial report, not a successful readiness verdict. A
+successful audit process exit only means the report was produced. `present`
+means declaration evidence, never proof that commands or workspace globs work.
 Preview --install is blocked until reviewed locks exist through the separately
 approved recipe procedure. --verify uses existing dependencies without sync.
 Do not label preview scaffolds ready-to-code.

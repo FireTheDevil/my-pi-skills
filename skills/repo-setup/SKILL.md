@@ -45,6 +45,11 @@ retrofit. Read referenced instructions and commands yourself. Its JSON separates
 **present**, **missing**, **not verified**, and **not applicable** and proposes
 small additions; present is evidence of declaration only, not correctness.
 Custom task runners and incomplete/skipped files require manual interpretation.
+For package.json, command evidence requires nonempty string commands. Malformed
+script entries and workspace declarations are reported as errors and make the
+inventory incomplete; valid sibling declarations remain visible. Workspace
+arrays and Yarn-style objects with a packages array are recognized, including
+empty arrays. This checks declaration shape, not glob matches or executability.
 The inventory is bounded, skips symlinks and generated directories, and reports
 limits/errors. It intentionally does not read secrets or Git configuration.
 Audit may inspect a project inside a parent repo/workspace; scaffolding refuses it.

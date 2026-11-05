@@ -46,12 +46,31 @@ def audit(raw: Path) -> dict:
                 if not isinstance(data, dict):
                     raise ValueError("manifest is not an object")
                 item["package_manager"] = data.get("packageManager")
-                item["workspaces"] = data.get("workspaces")
+                item["workspaces"] = None
+                errors = []
+                if "workspaces" in data:
+                    workspaces = data["workspaces"]
+                    # npm/Bun use an array; Yarn also supports {packages: [...]}.
+                    patterns = workspaces.get("packages") if isinstance(workspaces, dict) else workspaces
+                    if isinstance(patterns, list) and all(isinstance(p, str) and p.strip() for p in patterns):
+                        item["workspaces"] = workspaces
+                    else:
+                        errors.append("workspaces must be an array of nonempty strings or an object with a packages array")
                 commands = data.get("scripts", {})
                 if not isinstance(commands, dict):
-                    raise ValueError("scripts is not an object")
-                scripts[item["path"]] = commands
-                item["scripts"] = commands
+                    errors.append("scripts is not an object")
+                    commands = {}
+                valid_commands = {}
+                for name, command in commands.items():
+                    if not name.strip() or not isinstance(command, str) or not command.strip():
+                        errors.append(f"scripts.{name} must have a nonempty name and string command")
+                    else:
+                        valid_commands[name] = command
+                scripts[item["path"]] = valid_commands
+                item["scripts"] = valid_commands
+                if errors:
+                    item["errors"] = errors
+                    incomplete = True
             elif kind == "manifest" and path.name == "pyproject.toml":
                 # tomllib is optional: helper remains usable with Python 3.10.
                 try:
@@ -127,7 +146,7 @@ def audit(raw: Path) -> dict:
     gap("project manifest", [x["path"] for x in local if x["kind"] == "manifest"], "Identify the project and add only its appropriate manifest")
     gap("dependency lock", [x["path"] for x in local if x["kind"] == "lock"], "Ask approval to resolve a lock with the existing package manager", any(x["kind"] == "manifest" for x in local))
     gap("project instructions", [x["path"] for x in inventory if "instruction" in x["kind"]], "Document existing run/check conventions")
-    gap("workspace declaration", [x["path"] for x in local if x["kind"] == "workspace" or x.get("workspaces") or x.get("uv_workspace")], "Confirm whether discovered package roots should share a workspace before adding one", len({str(Path(x["path"]).parent) for x in local if x["kind"] == "manifest"}) > 1)
+    gap("workspace declaration", [x["path"] for x in local if x["kind"] == "workspace" or x.get("workspaces") is not None or x.get("uv_workspace")], "Confirm whether discovered package roots should share a workspace before adding one", len({str(Path(x["path"]).parent) for x in local if x["kind"] == "manifest"}) > 1)
     gap("CI configuration", [x["path"] for x in local if x["kind"] == "CI"], "Ask whether CI is wanted before choosing a provider")
     for label, names in {
         "format command": {"format", "format:check"},
