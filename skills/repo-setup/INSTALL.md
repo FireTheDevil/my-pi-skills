@@ -19,6 +19,13 @@ Python 3.10+; TOML audit parsing needs 3.11+. Python recipes need installed Pyth
 3.12 and uv; new JS/TS previews propose Bun 1.3.11 and Node 24.x. The legacy npm
 recipe needs Node 24.x/npm 11.x. No runtime is automatically installed.
 
+Before `--install` or `--verify` writes starter files, including missing files on
+reruns, the helper checks Node 24 for JS/TS, npm 11 for the legacy npm recipe,
+and an existing Python 3.12 for both Python recipes. Python discovery is offline,
+cannot download a runtime, and ignores unrelated caller projects/configuration.
+Bun previews do not require npm. Plans and scaffold-only `--apply` do not need
+recipe tools. Passing preflight does not establish installation or runtime readiness.
+
 ## Use
 
 Examples in Pi:
@@ -65,6 +72,11 @@ Do not rerun after intentional deletions. Nonempty unrecognized repositories,
 parent repositories/workspaces and symlinks stop scaffolding. Use audit instead.
 Legacy revision stays 1.1.0; preview revision is 1.2.0-preview. No force overwrite,
 automatic upgrade, global install or reset exists.
+
+With `--git`, an empty `.git` left by interrupted initialization is recovered.
+Nonempty invalid Git metadata is refused before missing starter files are written;
+inspect that metadata instead of deleting it to force setup. Existing valid
+repositories and linked worktrees are preserved, and initialization is verified.
 
 Read the installed install-anti-slop skill before JS/TS composition. Ask approval
 for its dependencies and rerun checks/smoke afterward. Baseline Oxlint alone is

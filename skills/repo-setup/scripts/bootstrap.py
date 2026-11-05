@@ -137,6 +137,26 @@ def preflight(recipe: str, install: bool, verify: bool, git: bool) -> None:
         if not re.fullmatch(r"v24\.\d+\.\d+", version):
             raise SetupError(f"This recipe requires Node 24.x, found {version}. Select Node 24 before installing.")
 
+    if (install or verify) and recipe == "typescript-web":
+        version = subprocess.check_output(["npm", "--version"], text=True).strip()
+        if not re.fullmatch(r"11\.\d+\.\d+", version):
+            raise SetupError(f"This recipe requires npm 11.x, found {version!r}. Select npm 11 before setup; nothing was written.")
+    if (install or verify) and recipe in ("python-cli", "fastapi"):
+        # Check an already installed interpreter without discovering another
+        # project, using its virtualenv, downloading Python, or persisting a cache.
+        try:
+            subprocess.check_output(
+                ["uv", "python", "find", "--no-project", "--no-config", "--system",
+                 "--no-python-downloads", "--offline", "--no-cache", "3.12"],
+                text=True, stderr=subprocess.STDOUT,
+            )
+        except subprocess.CalledProcessError as exc:
+            raise SetupError(
+                "This recipe requires an installed Python 3.12 interpreter. "
+                "uv could not find it offline; install or select Python 3.12 separately. "
+                f"Nothing was written. uv reported: {exc.output.strip()}"
+            ) from exc
+
 
 def directory_fd(path: Path) -> int:
     """Open/create the absolute directory one component at a time without links."""
@@ -154,6 +174,21 @@ def directory_fd(path: Path) -> int:
     except BaseException:
         os.close(fd)
         raise
+
+
+def git_initialization_needed(target: Path) -> bool:
+    """Recover an empty init attempt, but never rewrite unknown Git metadata."""
+    marker = target / ".git"
+    if not marker.exists() or (marker.is_dir() and not any(marker.iterdir())):
+        return True
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"], cwd=target,
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+    )
+    if result.returncode or Path(result.stdout.strip()).resolve() != target.resolve():
+        raise SetupError("Existing Git metadata is not a valid worktree for this target. "
+                         "It was left unchanged; inspect .git before retrying.")
+    return False
 
 
 def exclusive_file(root_fd: int, relative: str, data: bytes) -> None:
@@ -253,9 +288,13 @@ def main() -> int:
             print("No files written. Use --apply to scaffold. Ask approval before any dependency resolution/install; legacy --install also requires --approve-install.")
             return 0
         preflight(args.recipe, args.install, args.verify, args.git)
+        initialize_git = args.git and git_initialization_needed(target)
         apply(target, args.recipe, name, files, plan, state)
-        if args.git and not (target / ".git").exists():
+        if initialize_git:
             run(["git", "init", "--initial-branch=main", "--template="], target)
+        if args.git and git_initialization_needed(target):
+            raise SetupError("Git initialization did not create valid repository metadata; "
+                             "generated files were preserved.")
         check_path(target)
         if args.install:
             if args.recipe == "typescript-web":

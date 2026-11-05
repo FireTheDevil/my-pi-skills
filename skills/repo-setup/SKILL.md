@@ -93,12 +93,24 @@ The helper uses uv offline/no-sync and disables Bun auto-install, but these are
 not a sandbox for arbitrary script subprocesses. Dependencies must already be
 available. Preview verification requires a real lock.
 
+Before install or verification writes starter files, the helper checks Node 24
+for JS/TS, npm 11 only for `typescript-web`, and an existing Python 3.12 for
+`python-cli` and `fastapi`. Python discovery is offline, cannot download a runtime,
+and ignores unrelated caller projects/configuration. A plan or scaffold-only
+`--apply` does not need recipe tools. Passing preflight does not prove dependency
+compatibility or that project checks will pass. Approval gates remain unchanged.
+
 Optionally add `--git` to initialize local main only when wanted. No commit,
 remote, push, license choice, hooks, CI, deployment, credentials or global setting
 is added. Edited files print `KEEP EDITED` and are never replaced; missing starter
 files are recreated after partial failures. Do not rerun after intentional
 deletions. Reruns require the same recipe/name/revision. Legacy recipe revision
 stays 1.1.0; previews use 1.2.0-preview. No force flag or automatic upgrade.
+
+With `--git`, an empty `.git` left by interrupted initialization is recovered.
+Nonempty invalid Git metadata stops setup before missing starter files are written.
+Inspect it rather than deleting it to force a rerun. Valid repositories and linked
+worktrees are preserved, and the resulting Git repository is verified.
 
 For JS/TS, inspect and compose the actual installed `install-anti-slop` skill via
 [the bridge](references/anti-slop.md), obtaining approval for its installs.
