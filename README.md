@@ -36,6 +36,10 @@ repo-setup installation guide and validation report for their limitations.
 
 ## Provenance and licenses
 
+Original contributions are licensed under the [MIT License](LICENSE),
+copyright (c) 2026 FireTheDevil. Third-party material retains its existing
+licenses and attribution; the root license does not replace those notices.
+
 Extracted from the local `myskills` repository at commit
 `8f057f9`, preserving the selected files, existing license notices, and
 attributions. The original repository remains a local history archive.
