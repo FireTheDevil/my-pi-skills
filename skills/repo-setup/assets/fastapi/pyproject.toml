@@ -1,0 +1,22 @@
+[project]
+name = "__PROJECT_NAME__"
+version = "0.1.0"
+description = "Typed FastAPI service"
+requires-python = ">=3.12,<3.13"
+dependencies = ["fastapi==0.115.12", "pydantic==2.11.4", "uvicorn==0.34.2"]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = ["ruff==0.16.10", "ty==0.0.84"]
+
+[[tool.uv.index]]
+url = "https://pypi.org/simple"
+default = true
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

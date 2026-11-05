@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "recipe": "typescript-web",
+      "fresh_setup": "passed",
+      "clean_locked_install": "passed",
+      "rerun": "byte-identical",
+      "negative_checks": [
+        "format",
+        "lint",
+        "type",
+        "test"
+      ],
+      "startup": "passed"
+    },
+    {
+      "recipe": "python-cli",
+      "fresh_setup": "passed",
+      "clean_locked_install": "passed",
+      "rerun": "byte-identical",
+      "negative_checks": [
+        "format",
+        "lint",
+        "type",
+        "test"
+      ],
+      "startup": "passed"
+    }
+  ]
+}

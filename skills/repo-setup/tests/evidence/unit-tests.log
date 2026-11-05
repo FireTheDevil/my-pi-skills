@@ -1,0 +1,35 @@
+test_both_recipes_scaffold (test_bootstrap.BootstrapTests.test_both_recipes_scaffold) ... ok
+test_dry_run_creates_nothing (test_bootstrap.BootstrapTests.test_dry_run_creates_nothing) ... ok
+test_existing_git_repository_is_unchanged (test_bootstrap.BootstrapTests.test_existing_git_repository_is_unchanged) ... ok
+test_git_init_ignores_inherited_hooks_template (test_bootstrap.BootstrapTests.test_git_init_ignores_inherited_hooks_template) ... ok
+test_nonempty_unrecognized_directory_is_unchanged (test_bootstrap.BootstrapTests.test_nonempty_unrecognized_directory_is_unchanged) ... ok
+test_preserves_user_edits_and_extras (test_bootstrap.BootstrapTests.test_preserves_user_edits_and_extras) ... ok
+test_rechecks_directory_links_during_apply (test_bootstrap.BootstrapTests.test_rechecks_directory_links_during_apply) ... ok
+test_recovers_missing_files_after_partial_setup (test_bootstrap.BootstrapTests.test_recovers_missing_files_after_partial_setup) ... ok
+test_refuses_git_environment_redirection (test_bootstrap.BootstrapTests.test_refuses_git_environment_redirection) ... ok
+test_refuses_parent_repository (test_bootstrap.BootstrapTests.test_refuses_parent_repository) ... ok
+test_refuses_parent_workspace (test_bootstrap.BootstrapTests.test_refuses_parent_workspace) ... ok
+test_refuses_recipe_or_name_change (test_bootstrap.BootstrapTests.test_refuses_recipe_or_name_change) ... ok
+test_refuses_symlink_generated_file (test_bootstrap.BootstrapTests.test_refuses_symlink_generated_file) ... ok
+test_refuses_symlink_state (test_bootstrap.BootstrapTests.test_refuses_symlink_state) ... ok
+test_refuses_symlink_target (test_bootstrap.BootstrapTests.test_refuses_symlink_target) ... ok
+test_refuses_unknown_revision (test_bootstrap.BootstrapTests.test_refuses_unknown_revision) ... ok
+test_rejects_dotdot_before_path_normalization (test_bootstrap.BootstrapTests.test_rejects_dotdot_before_path_normalization) ... ok
+test_rejects_external_runtime_directory (test_bootstrap.BootstrapTests.test_rejects_external_runtime_directory) ... ok
+test_rejects_generated_artifact_in_assets (test_bootstrap.BootstrapTests.test_rejects_generated_artifact_in_assets) ... ok
+test_rejects_invalid_name_without_writing (test_bootstrap.BootstrapTests.test_rejects_invalid_name_without_writing) ... ok
+test_rejects_unreviewed_file_in_assets (test_bootstrap.BootstrapTests.test_rejects_unreviewed_file_in_assets) ... ok
+test_second_run_is_byte_identical (test_bootstrap.BootstrapTests.test_second_run_is_byte_identical) ... ok
+test_side_effect_flags_require_apply (test_bootstrap.BootstrapTests.test_side_effect_flags_require_apply) ... ok
+test_state_publication_failure_can_resume (test_bootstrap.BootstrapTests.test_state_publication_failure_can_resume) ... ok
+test_typescript_lock_matches_project_name_and_exact_dependencies (test_bootstrap.BootstrapTests.test_typescript_lock_matches_project_name_and_exact_dependencies) ... ok
+test_typescript_scaffolds_without_preview_flag (test_bootstrap.BootstrapTests.test_typescript_scaffolds_without_preview_flag) ... ok
+test_uv_install_environment_is_local (test_bootstrap.BootstrapTests.test_uv_install_environment_is_local) ... $ uv sync --locked
+ok
+test_verifier_environment_is_disposable (test_bootstrap.BootstrapTests.test_verifier_environment_is_disposable) ... $ uv sync --locked
+ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 1.190s
+
+OK

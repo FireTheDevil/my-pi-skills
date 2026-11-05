@@ -1,0 +1,32 @@
+{
+  "name": "__PROJECT_NAME__",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.3.11",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "bun run --cwd apps/web dev",
+    "build": "bun run typecheck && bun run --cwd apps/web build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "oxlint --deny-warnings .",
+    "typecheck": "tsc -p packages/shared/tsconfig.json --noEmit && tsc -p apps/web/tsconfig.json --noEmit",
+    "check": "bun run format:check && bun run lint && bun run typecheck && bun run build",
+    "smoke": "bun scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "typescript": "6.0.2",
+    "vite": "8.3.2",
+    "oxlint": "1.87.0",
+    "prettier": "3.9.9",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

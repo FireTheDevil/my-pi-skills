@@ -1,0 +1,97 @@
+REPO-SETUP EXPANDED PREVIEW — CURRENT LOCAL CHECKS
+
+- Added React/Vite/Bun, FastAPI/uv and Bun workspace source scaffolds
+- New recipe revision: 1.2.0-preview; no generated locks or installed evidence
+- Legacy template bytes, locks and recipe revision 1.1.0 are preserved
+- Added bounded read-only existing-repo audit with evidence/status/proposals
+- Installation now requires explicit approval; preview installs remain blocked
+- Existing 28 offline safety tests passed; no unit tests added
+- Offline verify.py --scaffold-only passed for all five recipes: dry-run,
+  generation, byte-identical rerun, edit preservation and missing-file recovery
+- Focused temporary checks passed: audit leaves fixture bytes unchanged, does
+  not execute declared commands, inventories ancestor instructions/CI/workspaces,
+  reports symlinks and malformed TOML, and exposes all four gap statuses
+- Focused checks passed for every preview: installation without approval refused,
+  preview install with approval still refused pending lock review, verification
+  without a real lock refused, and symlinked output writes refused
+- New Python source parsed with stdlib AST; JSON/TOML parsed successfully
+- Installed Bun 1.3.11 transpiler parsed new TS/TSX/MJS without dependency imports
+- No dependency install, lock resolution, runtime download, browser, anti-slop,
+  lint/type/build/runtime integration or clean-install check was performed
+- Proposed direct dependency compatibility and all new runtime behavior remain
+  unverified until approved resolution, installation and end-to-end checks
+- No commits, remotes, Pi settings, CI or runtime installations were made
+
+The records below are HISTORICAL and do not validate the changed helper or
+new previews. In particular, their "unchanged" statements describe that old
+documentation-only release, not this expansion.
+
+REPO-SETUP 1.1.1 DOCUMENTATION UPDATE
+Date: 6 October 2026
+
+- Added optional security-contract guidance for sensitive TypeScript APIs
+- Runtime policy checks remain authoritative; gdp-ts is not a default dependency
+- Metadata compatibility is distinguished from unperformed integration testing
+- Upstream issues #11 and #13 are cited as reports, not locally reproduced findings
+- Bootstrap, verifier, templates, lockfiles, and existing tests are byte-identical
+  to the verified 1.1.0 recipe; its execution revision is intentionally unchanged
+- Current skill validation, relative links, and all 28 offline tests passed
+- No dependency install or network integration test was repeated for this docs-only update
+- The complete-source ZIP can be extracted and run locally using INSTALL.md
+
+The prior real integration evidence below remains applicable to the unchanged code.
+
+REPO-SETUP 1.1.0 VALIDATION REPORT
+Date: 6 October 2026
+
+VERIFIED FOR BOTH RECIPES
+- Skill frontmatter/name validation
+- 28 stdlib filesystem/scaffolder safety tests
+- Fresh-directory setup with a locked dependency installation
+- Independent clean-copy locked installation without installed dependencies
+- Non-mutating formatting check, lint, type checking, actual behavior tests
+- Startup smoke check
+- A second scaffold invocation is byte-identical and creates no Git remote
+- Intentional formatting, lint, type, and test defects each fail the aggregate check
+- Restoring the defects returns checks to green and source to identical bytes
+- Nonempty directories, user edits, symlinks, parent repos/workspaces, recipe/name
+  changes, unsupported revisions, partial setup recovery, and dry runs are tested
+- Git environment redirection and inherited active hook templates are rejected/avoided
+- Source assets are constrained to an explicit manifest; no dependency trees are bundled
+
+TYPESCRIPT WEB
+- Node 24.19.0 and npm 11.9.0
+- TypeScript 6.0.2, Vite 8.3.2, Vitest 5.0.3, Oxlint 1.87.0, Prettier 3.9.9
+- The authorized retry installed 39 packages and exited 0
+- Installation uses --ignore-scripts --no-audit --no-fund
+- package-lock.json now ships with the recipe; subsequent installs use npm ci
+- Prettier, Oxlint, strict TypeScript, all three behavior tests, and Vite build passed
+- Vite startup and HTTP serving of HTML/transformed application module passed
+- All four deliberate failure fixtures reached their intended failing stages
+- The 1.0.0 preview restriction has been removed; revision is now 1.1.0
+
+PYTHON CLI
+- Python 3.12.14, uv 0.12.19, Git 2.52.0
+- Ruff 0.16.10, ty 0.0.84, pytest 9.1.1, uv_build 0.12.19
+- Formatting, lint, types, all six behavior/CLI tests, and greeting smoke passed
+- uv_build produced a source distribution and wheel
+- Both fresh and clean-copy uv sync --locked succeeded
+
+NOT CLAIMED
+- The user's installed anti-slop skill was inaccessible; composition was not executed
+- Pi discovery and execution in the user's WSL installation were not tested
+- No browser interaction/E2E test or remote CI was run
+- Building the Python wheel is not the same as installing and exercising that wheel
+- No remote repository, commit, deployment, or global runtime installation was created
+
+REPRODUCTION
+python3 -m unittest discover -s tests -v
+python3 scripts/verify.py
+
+EVIDENCE
+tests/evidence contains the saved real integration and offline safety results.
+An independent read-only release review passed: all 28 safety tests, exact lock
+consistency, HTTPS npm registry sources and SHA-512 integrity for all 82 locked
+dependency resolutions, clean asset inventories, and explicit no-change refusal
+of 1.0.0 state. It accepted the real integration evidence without repeating installs.
+The extracted release ZIP also passes all 28 safety tests.

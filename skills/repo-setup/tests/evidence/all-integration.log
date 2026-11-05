@@ -1,0 +1,693 @@
+$ /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/shared/repo-setup-skill/scripts/bootstrap.py /tmp/repo-setup-integration-gv5iguv5/typescript-web --recipe typescript-web
+DRY RUN: typescript-web -> /tmp/repo-setup-integration-gv5iguv5/typescript-web (recipe 1.1.0)
+  CREATE       .editorconfig
+  CREATE       .gitignore
+  CREATE       .node-version
+  CREATE       .oxlintrc.json
+  CREATE       .prettierignore
+  CREATE       AGENTS.md
+  CREATE       README.md
+  CREATE       index.html
+  CREATE       package-lock.json
+  CREATE       package.json
+  CREATE       scripts/smoke.mjs
+  CREATE       src/counter.test.ts
+  CREATE       src/counter.ts
+  CREATE       src/main.ts
+  CREATE       src/style.css
+  CREATE       tsconfig.json
+  Sources: bundled pinned recipe; npm registry or PyPI for dependencies
+  No remote, commit, license choice, hooks, credentials, or global settings are created
+No files written. Add --apply --install --verify --git for complete local setup.
+$ /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/shared/repo-setup-skill/scripts/bootstrap.py /tmp/repo-setup-integration-gv5iguv5/typescript-web --recipe typescript-web --apply --install --verify --git
+APPLY: typescript-web -> /tmp/repo-setup-integration-gv5iguv5/typescript-web (recipe 1.1.0)
+  CREATE       .editorconfig
+  CREATE       .gitignore
+  CREATE       .node-version
+  CREATE       .oxlintrc.json
+  CREATE       .prettierignore
+  CREATE       AGENTS.md
+  CREATE       README.md
+  CREATE       index.html
+  CREATE       package-lock.json
+  CREATE       package.json
+  CREATE       scripts/smoke.mjs
+  CREATE       src/counter.test.ts
+  CREATE       src/counter.ts
+  CREATE       src/main.ts
+  CREATE       src/style.css
+  CREATE       tsconfig.json
+  Sources: bundled pinned recipe; npm registry or PyPI for dependencies
+  No remote, commit, license choice, hooks, credentials, or global settings are created
+$ git init --initial-branch=main --template=
+Initialized empty Git repository in /tmp/repo-setup-integration-gv5iguv5/typescript-web/.git/
+$ npm ci --ignore-scripts --no-audit --no-fund
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+added 42 packages in 903ms
+$ npm run check
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 lint
+> oxlint --deny-warnings .
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /tmp/repo-setup-integration-gv5iguv5/typescript-web
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  14:32:56
+   Duration  146ms (transform 59%, import 24%, worker 9%, tests 8%)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.2 building client environment for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                 0.48 kB │ gzip: 0.29 kB
+dist/assets/index-B7qt4for.css  0.14 kB │ gzip: 0.13 kB
+dist/assets/index-HMrzldon.js   0.96 kB │ gzip: 0.54 kB
+
+✓ built in 52ms
+$ npm run smoke
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 smoke
+> node scripts/smoke.mjs
+
+PASS: Vite starts and serves the page and application module
+Scaffold complete. Checks and smoke passed.
+$ /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/shared/repo-setup-skill/scripts/bootstrap.py /tmp/repo-setup-integration-gv5iguv5/typescript-web --recipe typescript-web --apply --git
+APPLY: typescript-web -> /tmp/repo-setup-integration-gv5iguv5/typescript-web (recipe 1.1.0)
+  UNCHANGED    .editorconfig
+  UNCHANGED    .gitignore
+  UNCHANGED    .node-version
+  UNCHANGED    .oxlintrc.json
+  UNCHANGED    .prettierignore
+  UNCHANGED    AGENTS.md
+  UNCHANGED    README.md
+  UNCHANGED    index.html
+  UNCHANGED    package-lock.json
+  UNCHANGED    package.json
+  UNCHANGED    scripts/smoke.mjs
+  UNCHANGED    src/counter.test.ts
+  UNCHANGED    src/counter.ts
+  UNCHANGED    src/main.ts
+  UNCHANGED    src/style.css
+  UNCHANGED    tsconfig.json
+  Sources: bundled pinned recipe; npm registry or PyPI for dependencies
+  No remote, commit, license choice, hooks, credentials, or global settings are created
+Scaffold complete. Checks were not run; not yet verified ready to code.
+$ git remote -v
+$ npm ci --ignore-scripts --no-audit --no-fund
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+added 42 packages in 842ms
+$ npm run check
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 lint
+> oxlint --deny-warnings .
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /tmp/repo-setup-integration-gv5iguv5/typescript-web-clean
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  14:33:00
+   Duration  140ms (transform 59%, import 23%, worker 9%, tests 9%)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.2 building client environment for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                 0.48 kB │ gzip: 0.29 kB
+dist/assets/index-B7qt4for.css  0.14 kB │ gzip: 0.13 kB
+dist/assets/index-HMrzldon.js   0.96 kB │ gzip: 0.54 kB
+
+✓ built in 49ms
+$ npm run smoke
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 smoke
+> node scripts/smoke.mjs
+
+PASS: Vite starts and serves the page and application module
+$ npm run check
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+[warn] src/style.css
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+$ npm run format
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format
+> prettier --write .
+
+.oxlintrc.json 15ms (unchanged)
+AGENTS.md 23ms (unchanged)
+index.html 18ms (unchanged)
+package.json 2ms (unchanged)
+README.md 16ms (unchanged)
+scripts/smoke.mjs 12ms (unchanged)
+src/counter.test.ts 27ms (unchanged)
+src/counter.ts 8ms (unchanged)
+src/main.ts 4ms (unchanged)
+src/style.css 16ms (unchanged)
+tsconfig.json 2ms (unchanged)
+$ npm run check
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 lint
+> oxlint --deny-warnings .
+
+src/counter.ts:9:1: error eslint(no-debugger): `debugger` statement is not allowed help: Remove the debugger statement
+PASS: typescript-web aggregate rejects lint defect
+$ npm run format
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format
+> prettier --write .
+
+.oxlintrc.json 16ms (unchanged)
+AGENTS.md 23ms (unchanged)
+index.html 18ms (unchanged)
+package.json 2ms (unchanged)
+README.md 14ms (unchanged)
+scripts/smoke.mjs 12ms (unchanged)
+src/counter.test.ts 27ms (unchanged)
+src/counter.ts 7ms (unchanged)
+src/main.ts 4ms (unchanged)
+src/style.css 16ms (unchanged)
+tsconfig.json 2ms (unchanged)
+$ npm run check
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 lint
+> oxlint --deny-warnings .
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 typecheck
+> tsc --noEmit
+
+src/counter.ts(9,14): error TS2322: Type 'string' is not assignable to type 'number'.
+PASS: typescript-web aggregate rejects type defect
+$ npm run format
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format
+> prettier --write .
+
+.oxlintrc.json 16ms (unchanged)
+AGENTS.md 23ms (unchanged)
+index.html 18ms (unchanged)
+package.json 2ms (unchanged)
+README.md 15ms (unchanged)
+scripts/smoke.mjs 12ms (unchanged)
+src/counter.test.ts 27ms (unchanged)
+src/counter.ts 6ms (unchanged)
+src/main.ts 4ms (unchanged)
+src/style.css 16ms (unchanged)
+tsconfig.json 2ms (unchanged)
+$ npm run check
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 lint
+> oxlint --deny-warnings .
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /tmp/repo-setup-integration-gv5iguv5/typescript-web-clean
+
+ ❯ src/counter.test.ts (3 tests | 1 failed) 7ms
+   ❯ formatCount (3)
+     × formats zero and plural counts 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/counter.test.ts > formatCount > formats zero and plural counts
+AssertionError: expected '0 clicks' to be 'incorrect' // Object.is equality
+
+Expected: "incorrect"
+Received: "0 clicks"
+
+ ❯ src/counter.test.ts:6:28
+      4| describe("formatCount", () => {
+      5|   it("formats zero and plural counts", () => {
+      6|     expect(formatCount(0)).toBe("incorrect");
+       |                            ^
+      7|     expect(formatCount(2)).toBe("2 clicks");
+      8|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  14:33:07
+   Duration  153ms (transform 49%, import 23%, tests 18%, worker 9%)
+
+PASS: typescript-web aggregate rejects test defect
+$ npm run check
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 lint
+> oxlint --deny-warnings .
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /tmp/repo-setup-integration-gv5iguv5/typescript-web-clean
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  14:33:09
+   Duration  133ms (transform 58%, import 24%, worker 9%, tests 9%)
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.2 building client environment for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                 0.48 kB │ gzip: 0.29 kB
+dist/assets/index-B7qt4for.css  0.14 kB │ gzip: 0.13 kB
+dist/assets/index-HMrzldon.js   0.96 kB │ gzip: 0.54 kB
+
+✓ built in 53ms
+$ npm run smoke
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> typescript-web@0.1.0 smoke
+> node scripts/smoke.mjs
+
+PASS: Vite starts and serves the page and application module
+$ /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/shared/repo-setup-skill/scripts/bootstrap.py /tmp/repo-setup-integration-gv5iguv5/python-cli --recipe python-cli
+DRY RUN: python-cli -> /tmp/repo-setup-integration-gv5iguv5/python-cli (recipe 1.1.0)
+  CREATE       .editorconfig
+  CREATE       .gitignore
+  CREATE       .python-version
+  CREATE       AGENTS.md
+  CREATE       README.md
+  CREATE       pyproject.toml
+  CREATE       scripts/check.py
+  CREATE       src/app/__init__.py
+  CREATE       src/app/__main__.py
+  CREATE       src/app/py.typed
+  CREATE       tests/test_app.py
+  CREATE       uv.lock
+  Sources: bundled pinned recipe; npm registry or PyPI for dependencies
+  No remote, commit, license choice, hooks, credentials, or global settings are created
+No files written. Add --apply --install --verify --git for complete local setup.
+$ /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/shared/repo-setup-skill/scripts/bootstrap.py /tmp/repo-setup-integration-gv5iguv5/python-cli --recipe python-cli --apply --install --verify --git
+APPLY: python-cli -> /tmp/repo-setup-integration-gv5iguv5/python-cli (recipe 1.1.0)
+  CREATE       .editorconfig
+  CREATE       .gitignore
+  CREATE       .python-version
+  CREATE       AGENTS.md
+  CREATE       README.md
+  CREATE       pyproject.toml
+  CREATE       scripts/check.py
+  CREATE       src/app/__init__.py
+  CREATE       src/app/__main__.py
+  CREATE       src/app/py.typed
+  CREATE       tests/test_app.py
+  CREATE       uv.lock
+  Sources: bundled pinned recipe; npm registry or PyPI for dependencies
+  No remote, commit, license choice, hooks, credentials, or global settings are created
+$ git init --initial-branch=main --template=
+Initialized empty Git repository in /tmp/repo-setup-integration-gv5iguv5/python-cli/.git/
+$ uv sync --locked
+Using CPython 3.12.14 interpreter at: /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12
+Creating virtual environment at: .venv
+Resolved 9 packages in 0.91ms
+   Building python-cli @ file:///tmp/repo-setup-integration-gv5iguv5/python-cli
+      Built python-cli @ file:///tmp/repo-setup-integration-gv5iguv5/python-cli
+Prepared 1 package in 3ms
+Installed 8 packages in 2ms
+ + iniconfig==2.3.0
+ + packaging==26.3
+ + pluggy==1.6.0
+ + pygments==2.21.0
+ + pytest==9.1.1
+ + python-cli==0.1.0 (from file:///tmp/repo-setup-integration-gv5iguv5/python-cli)
+ + ruff==0.16.10
+ + ty==0.0.84
+$ uv run --locked python scripts/check.py
+$ uv run --locked ruff format --check .
+6 files already formatted
+$ uv run --locked ruff check .
+All checks passed!
+$ uv run --locked ty check
+All checks passed!
+$ uv run --locked pytest
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: /tmp/repo-setup-integration-gv5iguv5/python-cli
+configfile: pyproject.toml
+testpaths: tests
+collected 6 items
+
+tests/test_app.py ......                                                 [100%]
+
+============================== 6 passed in 0.05s ===============================
+$ uv run --locked app Developer
+Hello, Developer!
+Scaffold complete. Checks and smoke passed.
+$ /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 /workspace/shared/repo-setup-skill/scripts/bootstrap.py /tmp/repo-setup-integration-gv5iguv5/python-cli --recipe python-cli --apply --git
+APPLY: python-cli -> /tmp/repo-setup-integration-gv5iguv5/python-cli (recipe 1.1.0)
+  UNCHANGED    .editorconfig
+  UNCHANGED    .gitignore
+  UNCHANGED    .python-version
+  UNCHANGED    AGENTS.md
+  UNCHANGED    README.md
+  UNCHANGED    pyproject.toml
+  UNCHANGED    scripts/check.py
+  UNCHANGED    src/app/__init__.py
+  UNCHANGED    src/app/__main__.py
+  UNCHANGED    src/app/py.typed
+  UNCHANGED    tests/test_app.py
+  UNCHANGED    uv.lock
+  Sources: bundled pinned recipe; npm registry or PyPI for dependencies
+  No remote, commit, license choice, hooks, credentials, or global settings are created
+Scaffold complete. Checks were not run; not yet verified ready to code.
+$ git remote -v
+$ uv sync --locked
+Using CPython 3.12.14 interpreter at: /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12
+Creating virtual environment at: .venv
+Resolved 9 packages in 1ms
+   Building python-cli @ file:///tmp/repo-setup-integration-gv5iguv5/python-cli-clean
+      Built python-cli @ file:///tmp/repo-setup-integration-gv5iguv5/python-cli-clean
+Prepared 1 package in 4ms
+Installed 8 packages in 1ms
+ + iniconfig==2.3.0
+ + packaging==26.3
+ + pluggy==1.6.0
+ + pygments==2.21.0
+ + pytest==9.1.1
+ + python-cli==0.1.0 (from file:///tmp/repo-setup-integration-gv5iguv5/python-cli-clean)
+ + ruff==0.16.10
+ + ty==0.0.84
+$ uv run --locked python scripts/check.py
+$ uv run --locked ruff format --check .
+6 files already formatted
+$ uv run --locked ruff check .
+All checks passed!
+$ uv run --locked ty check
+All checks passed!
+$ uv run --locked pytest
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: /tmp/repo-setup-integration-gv5iguv5/python-cli-clean
+configfile: pyproject.toml
+testpaths: tests
+collected 6 items
+
+tests/test_app.py ......                                                 [100%]
+
+============================== 6 passed in 0.05s ===============================
+$ uv run --locked app Developer
+Hello, Developer!
+$ uv run --locked app Developer
+Hello, Developer!
+$ uv run --locked python scripts/check.py
+$ uv run --locked ruff format --check .
+unformatted: File would be reformatted
+  --> src/app/__init__.py:11:1
+   |
+10 |
+   - FORMAT_ME= 1
+11 +
+12 + FORMAT_ME = 1
+   |
+
+1 file would be reformatted, 5 files already formatted
+$ uv run --locked ruff format .
+1 file reformatted, 5 files left unchanged
+$ uv run --locked python scripts/check.py
+$ uv run --locked ruff format --check .
+6 files already formatted
+$ uv run --locked ruff check .
+E402 Module level import not at top of file
+  --> src/app/__init__.py:12:1
+   |
+12 | import os
+   | ^^^^^^^^^
+help: Move module level imports to top of file
+
+F401 `os` imported but unused
+  --> src/app/__init__.py:12:8
+   |
+12 | import os
+   |        ^^
+help: Remove unused import: `os`
+
+Found 2 errors.
+PASS: python-cli aggregate rejects lint defect
+$ uv run --locked ruff format .
+1 file reformatted, 5 files left unchanged
+$ uv run --locked python scripts/check.py
+$ uv run --locked ruff format --check .
+6 files already formatted
+$ uv run --locked ruff check .
+All checks passed!
+$ uv run --locked ty check
+error[invalid-assignment]: Object of type `Literal["wrong"]` is not assignable to `int`
+  --> src/app/__init__.py:12:14
+   |
+12 | WRONG: int = "wrong"
+   |        ---   ^^^^^^^ Incompatible value of type `Literal["wrong"]`
+   |        |
+   |        Declared type
+
+Found 1 diagnostic
+PASS: python-cli aggregate rejects type defect
+$ uv run --locked ruff format .
+6 files left unchanged
+$ uv run --locked python scripts/check.py
+$ uv run --locked ruff format --check .
+6 files already formatted
+$ uv run --locked ruff check .
+All checks passed!
+$ uv run --locked ty check
+All checks passed!
+$ uv run --locked pytest
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: /tmp/repo-setup-integration-gv5iguv5/python-cli-clean
+configfile: pyproject.toml
+testpaths: tests
+collected 6 items
+
+tests/test_app.py F.....                                                 [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_greeting_trims_name ___________________________
+
+    def test_greeting_trims_name() -> None:
+>       assert greet("  Ada  ") == "incorrect"
+E       AssertionError: assert 'Hello, Ada!' == 'incorrect'
+E         
+E         - incorrect
+E         + Hello, Ada!
+
+tests/test_app.py:10: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_app.py::test_greeting_trims_name - AssertionError: assert '...
+========================= 1 failed, 5 passed in 0.06s ==========================
+PASS: python-cli aggregate rejects test defect
+$ uv run --locked python scripts/check.py
+$ uv run --locked ruff format --check .
+6 files already formatted
+$ uv run --locked ruff check .
+All checks passed!
+$ uv run --locked ty check
+All checks passed!
+$ uv run --locked pytest
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: /tmp/repo-setup-integration-gv5iguv5/python-cli-clean
+configfile: pyproject.toml
+testpaths: tests
+collected 6 items
+
+tests/test_app.py ......                                                 [100%]
+
+============================== 6 passed in 0.05s ===============================
+$ uv run --locked app Developer
+Hello, Developer!
+$ uv run --locked app Developer
+Hello, Developer!
+$ uv build --out-dir /tmp/repo-setup-integration-gv5iguv5/python-dist
+Building source distribution...
+Building wheel from source distribution...
+Successfully built /tmp/repo-setup-integration-gv5iguv5/python-dist/python_cli-0.1.0.tar.gz
+Successfully built /tmp/repo-setup-integration-gv5iguv5/python-dist/python_cli-0.1.0-py3-none-any.whl
+{
+  "status": "passed",
+  "results": [
+    {
+      "recipe": "typescript-web",
+      "fresh_setup": "passed",
+      "clean_locked_install": "passed",
+      "rerun": "byte-identical",
+      "negative_checks": [
+        "format",
+        "lint",
+        "type",
+        "test"
+      ],
+      "startup": "passed"
+    },
+    {
+      "recipe": "python-cli",
+      "fresh_setup": "passed",
+      "clean_locked_install": "passed",
+      "rerun": "byte-identical",
+      "negative_checks": [
+        "format",
+        "lint",
+        "type",
+        "test"
+      ],
+      "startup": "passed"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+[project]
+name = "__PROJECT_NAME__"
+version = "0.1.0"
+description = "Small typed command-line application"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[project.scripts]
+app = "app.__main__:main"
+
+[build-system]
+requires = ["uv_build==0.12.19"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "app"
+
+[dependency-groups]
+dev = ["pytest==9.1.1", "ruff==0.16.10", "ty==0.0.84"]
+
+[[tool.uv.index]]
+url = "https://pypi.org/simple"
+default = true
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
