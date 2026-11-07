@@ -105,6 +105,12 @@ unknown scripts or commands that install dependencies without explicit approval.
 The helper uses uv offline/no-sync and disables Bun auto-install, but these are
 not a sandbox for arbitrary script subprocesses. Dependencies must already be
 available. Preview verification requires a real lock.
+Because preview locks are not bundled, `--verify` requires an existing regular
+`bun.lock` or `uv.lock`, not a symlink, before writing/restoring scaffold files or
+initializing Git. If absent, scaffold without `--verify` and complete the approved
+lock/install procedure first. Baseline bundled-lock recovery is unchanged. Lock
+presence/type is not proof of reviewed contents or installed dependencies; the
+lock is checked again before verification, not protected from concurrent edits.
 
 Before install or verification writes starter files, the helper checks Node 24
 for JS/TS, npm 11 only for `typescript-web`, and an existing Python 3.12 for

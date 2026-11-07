@@ -65,6 +65,11 @@ other workspace fields manually. A declared table still counts when these fields
 are absent.
 Preview --install is blocked until reviewed locks exist through the separately
 approved recipe procedure. --verify uses existing dependencies without sync.
+For previews, --verify requires an existing regular bun.lock or uv.lock, not a
+symlink, before any scaffold files are written or restored and before Git init.
+If missing, scaffold separately without --verify, then follow the approved
+lock/install procedure. Bundled baseline locks can still be restored on rerun.
+This file check does not validate lock contents, approval or installed dependencies.
 Do not label preview scaffolds ready-to-code.
 
 For a locked baseline, only **after explicit installation approval**:

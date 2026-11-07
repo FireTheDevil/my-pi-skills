@@ -176,6 +176,14 @@ def directory_fd(path: Path) -> int:
         raise
 
 
+def require_verification_lock(target: Path, name: str) -> None:
+    """Check lock presence/type only; review and installed dependencies are separate."""
+    lock = target / name
+    if lock.is_symlink() or not lock.is_file():
+        raise SetupError(f"Verification requires an existing regular {name} (not a symlink). "
+                         "Review the lock and install dependencies with approval before verification.")
+
+
 def git_initialization_needed(target: Path) -> bool:
     """Recover an empty init attempt, but never rewrite unknown Git metadata."""
     marker = target / ".git"
@@ -288,6 +296,10 @@ def main() -> int:
             print("No files written. Use --apply to scaffold. Ask approval before any dependency resolution/install; legacy --install also requires --approve-install.")
             return 0
         preflight(args.recipe, args.install, args.verify, args.git)
+        # Preview locks are never scaffolded. Fail before any file recovery or
+        # Git initialization when verification cannot use an existing lock.
+        if args.verify and args.recipe in PREVIEWS:
+            require_verification_lock(target, "uv.lock" if args.recipe == "fastapi" else "bun.lock")
         initialize_git = args.git and git_initialization_needed(target)
         apply(target, args.recipe, name, files, plan, state)
         if initialize_git:
@@ -306,13 +318,11 @@ def main() -> int:
                 run(["npm", "run", "check"], target, offline=True)
                 run(["npm", "run", "smoke"], target, offline=True)
             elif args.recipe in ("react-web", "bun-monorepo"):
-                if not (target / "bun.lock").is_file():
-                    raise SetupError("Verification requires an approved, reviewed bun.lock and installed dependencies")
+                require_verification_lock(target, "bun.lock")
                 run(["bun", "run", "check"], target, offline=True)
                 run(["bun", "run", "smoke"], target, offline=True)
             else:
-                if not (target / "uv.lock").is_file():
-                    raise SetupError("Verification requires an approved, reviewed uv.lock and installed dependencies")
+                require_verification_lock(target, "uv.lock")
                 run(["uv", "run", "--locked", "--no-sync", "--offline", "python", "scripts/check.py"], target, offline=True)
         print("Scaffold complete." + (" Checks and smoke passed." if args.verify else " Checks were not run; not yet verified ready to code."))
         return 0
