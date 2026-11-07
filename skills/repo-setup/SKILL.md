@@ -123,7 +123,11 @@ Optionally add `--git` to initialize local main only when wanted. No commit,
 remote, push, license choice, hooks, CI, deployment, credentials or global setting
 is added. Edited files print `KEEP EDITED` and are never replaced; missing starter
 files are recreated after partial failures. Do not rerun after intentional
-deletions. Reruns require the same recipe/name/revision. Legacy recipe revision
+deletions. Existing non-directory target ancestors or scaffold parent paths stop
+both dry-run and apply before any files are restored or tools are run. Missing
+directories can still be recreated. This preflight does not prevent concurrent
+filesystem replacement or provide transactional rollback.
+Reruns require the same recipe/name/revision. Legacy recipe revision
 stays 1.1.0; previews use 1.2.0-preview. No force flag or automatic upgrade.
 
 With `--git`, an empty `.git` left by interrupted initialization is recovered.

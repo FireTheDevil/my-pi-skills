@@ -54,6 +54,8 @@ def check_path(target: Path) -> None:
     for path in (target, *target.parents):
         if path.is_symlink():
             raise SetupError(f"Symlink in target path: {path}")
+        if path != target and path.exists() and not path.is_dir():
+            raise SetupError(f"Expected a directory: {path}")
     for generated in (".venv", "node_modules", ".git"):
         if (target / generated).is_symlink():
             raise SetupError(f"Refusing external/symlink runtime or Git directory: {target / generated}")
@@ -114,6 +116,8 @@ def plan_files(target: Path, files: dict[str, bytes]) -> list[tuple[str, str]]:
                 break
             if component.is_symlink():
                 raise SetupError(f"Refusing symlink: {component}")
+            if component != path and component.exists() and not component.is_dir():
+                raise SetupError(f"Expected a directory: {component}")
         if path.exists():
             if not path.is_file():
                 raise SetupError(f"Expected a file: {path}")
