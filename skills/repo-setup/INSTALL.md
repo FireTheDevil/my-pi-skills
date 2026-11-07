@@ -26,6 +26,12 @@ cannot download a runtime, and ignores unrelated caller projects/configuration.
 Bun previews do not require npm. Plans and scaffold-only `--apply` do not need
 recipe tools. Passing preflight does not establish installation or runtime readiness.
 
+An existing `.repo-setup.json` must be a regular file, not a symlink, FIFO,
+socket or directory. Plans and apply reject these entries before reading state,
+probing runtimes or restoring scaffold files. Inspect an invalid entry manually;
+the helper does not delete or replace it. This type check does not validate state
+contents or protect against concurrent filesystem replacement.
+
 ## Use
 
 Examples in Pi:

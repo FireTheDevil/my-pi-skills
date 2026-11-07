@@ -75,6 +75,8 @@ def load_state(target: Path, recipe: str, name: str) -> dict | None:
         if target.exists() and any(target.iterdir()):
             raise SetupError("Nonempty unrecognized directory. Inspect it and report gaps; do not scaffold or overwrite it.")
         return None
+    if not state_path.is_file():
+        raise SetupError("Setup state must be a regular file; nothing was written.")
     try:
         state = json.loads(state_path.read_text())
     except (OSError, ValueError) as exc:
