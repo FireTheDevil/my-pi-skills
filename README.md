@@ -15,6 +15,22 @@ Run the offline scaffold checks without installing dependencies:
 python3 skills/repo-setup/scripts/verify.py --scaffold-only
 ```
 
+Run the safety regressions separately:
+
+```sh
+python3 -m unittest discover -s skills/repo-setup/tests -v
+```
+
+The repo-setup workflow runs both commands on Linux with Python 3.12 for relevant
+pull requests and main-branch changes. CI installs pinned uv 0.13.5 so the real
+offline interpreter-discovery test runs, and fails on an empty suite, any skip,
+expected failure or failing test. Workflow actions are SHA-pinned, checkout
+credentials are not persisted, and the job has read-only repository access.
+Python and uv setup may download tools; the tests and scaffold checks do not
+install project dependencies or download runtimes. The workflow also compiles
+helper/test sources, excluding template assets, and checks for tracked changes.
+It does not configure required branch-protection checks.
+
 React/Bun, FastAPI, and Bun monorepo recipes remain previews. Scaffold checks
 do not demonstrate dependency compatibility or runtime readiness. See the
 repo-setup installation guide and validation report for their limitations.

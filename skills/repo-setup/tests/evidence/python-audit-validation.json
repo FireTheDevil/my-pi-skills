@@ -1,0 +1,70 @@
+{
+  "source": {
+    "repository": "FireTheDevil/my-pi-skills",
+    "base_commit": "146cd6cd33ac9571256d5f585a1fb884fe962eff",
+    "base_blobs_matched": 99,
+    "branch": "codex/repo-setup-safeguards-2026-11-05",
+    "pull_request": 2
+  },
+  "checked_date_utc": "2026-11-07",
+  "runtime": {
+    "platform": "Linux",
+    "python": "3.12.14",
+    "uv_parser_probe": "0.13.5"
+  },
+  "change": "Validate the Python tables read by the audit, nonempty project.scripts entries and uv workspace members/exclude; recognize empty workspace tables and copy only recognized workspace fields into JSON evidence.",
+  "validation": {
+    "baseline_tests": 69,
+    "unit_command": "python3 -m unittest discover -s tests -v",
+    "unit_tests": 85,
+    "unit_passed": 85,
+    "unit_skipped": 0,
+    "new_python_audit_tests": 16,
+    "prior_audit_negative_control": {
+      "tests": 16,
+      "failures": 40,
+      "errors": 11,
+      "exit_code": 1,
+      "note": "Subtest failures/errors overlap; these are not 51 independent tests."
+    },
+    "scaffold_command": "python3 scripts/verify.py --scaffold-only",
+    "scaffold_recipes": [
+      "typescript-web",
+      "python-cli",
+      "react-web",
+      "fastapi",
+      "bun-monorepo"
+    ],
+    "scaffold_result": "all pass: dry-run, byte-identical rerun, edited-file preservation and missing-file recovery",
+    "syntax_check": "passed",
+    "diff_check": "passed",
+    "independent_review": "Final independent review repeated all 85 tests and five scaffold checks, checked final diff and found no blocker. Unknown TOML date/time serialization was fixed and re-reviewed.",
+    "uv_metadata_probe": "Installed uv accepted dependency-free root fixtures with an empty workspace table or empty members/exclude arrays, and rejected a scalar workspace. Offline/no-cache/no-download/no-config probe; only pyproject.toml remained in each fixture. No external package dependencies, install or lockfile."
+  },
+  "unchanged": {
+    "asset_and_manifest_files": 71,
+    "bootstrap": "unchanged",
+    "dependencies_and_locks": "unchanged",
+    "prior_evidence": "unchanged",
+    "installed_user_copy": "not touched"
+  },
+  "limits": [
+    "Declaration shape only, not full Python or uv schema validation",
+    "Unknown workspace keys are not validated or copied; manual review required",
+    "No entry-point syntax/importability checks or workspace glob resolution",
+    "No dependency installation, runtime download or lock generation",
+    "Full baseline integrations not rerun; earlier evidence remains at 8ed1b8c",
+    "No preview-runtime, browser, installed Pi/WSL or actual anti-slop acceptance",
+    "No new concurrency or symlink-race hardening"
+  ],
+  "references": [
+    "https://docs.astral.sh/uv/reference/settings/#workspace",
+    "https://packaging.python.org/en/latest/specifications/pyproject-toml/#entry-points"
+  ],
+  "files_sha256": {
+    "scripts/audit.py": "b5ab8448e4797e77cbcedd988037fc0736ae4d1a5b73ec03357f33ffed99e755",
+    "tests/test_audit_python.py": "3a05d44f8369d3601d85a1b27f5a35b0476274e3e6418a6fd1732bccf997aae6",
+    "SKILL.md": "52892567cb8be73adb21fefd3f53473b0d3cb52038332f69523918b01212e1be",
+    "INSTALL.md": "5842ea574f1ec8b6213ab55c6fe9e291e34291c5d3c8988ed7075ea830b1f380"
+  }
+}
