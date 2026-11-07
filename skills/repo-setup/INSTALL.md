@@ -56,6 +56,13 @@ Check `complete_inventory` and per-file `error`/`errors` in audit JSON: malforme
 declarations return a partial report, not a successful readiness verdict. A
 successful audit process exit only means the report was produced. `present`
 means declaration evidence, never proof that commands or workspace globs work.
+Python audit validation covers the tables it reads, nonempty string project
+entry points and uv workspace members/exclude arrays, including empty workspace
+tables. Valid sibling evidence remains visible in partial reports. It does not
+validate the full Python/uv schema, import entry points or resolve workspace globs.
+Only recognized uv workspace members/exclude fields appear in the report; review
+other workspace fields manually. A declared table still counts when these fields
+are absent.
 Preview --install is blocked until reviewed locks exist through the separately
 approved recipe procedure. --verify uses existing dependencies without sync.
 Do not label preview scaffolds ready-to-code.

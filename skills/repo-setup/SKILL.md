@@ -50,6 +50,14 @@ script entries and workspace declarations are reported as errors and make the
 inventory incomplete; valid sibling declarations remain visible. Workspace
 arrays and Yarn-style objects with a packages array are recognized, including
 empty arrays. This checks declaration shape, not glob matches or executability.
+For pyproject.toml, it also validates the tables it reads, nonempty string
+project.scripts entries, and uv workspace members/exclude arrays. Malformed
+declarations make the inventory incomplete without hiding valid sibling evidence;
+an empty uv workspace table still counts as a declaration. Python entry points
+are not treated as npm-style check commands. This is not full Python/uv schema,
+entry-point syntax, importability, or workspace membership validation.
+Only recognized uv workspace members/exclude fields are copied into the report;
+other workspace fields are not validated and need manual review.
 The inventory is bounded, skips symlinks and generated directories, and reports
 limits/errors. It intentionally does not read secrets or Git configuration.
 Audit may inspect a project inside a parent repo/workspace; scaffolding refuses it.
