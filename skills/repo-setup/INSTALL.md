@@ -62,6 +62,12 @@ Check `complete_inventory` and per-file `error`/`errors` in audit JSON: malforme
 declarations return a partial report, not a successful readiness verdict. A
 successful audit process exit only means the report was produced. `present`
 means declaration evidence, never proof that commands or workspace globs work.
+Recognized evidence paths that are not regular files, such as FIFOs and sockets,
+are skipped without opening them and identified in `notes`. They make the report
+incomplete, so absent evidence is `not verified` rather than a recommendation to
+add a replacement. Valid sibling evidence remains visible. Generated directories
+and unrecognized filenames remain outside the inventory; this is not a complete
+filesystem check or protection against concurrent file replacement.
 Python audit validation covers the tables it reads, nonempty string project
 entry points and uv workspace members/exclude arrays, including empty workspace
 tables. Valid sibling evidence remains visible in partial reports. It does not

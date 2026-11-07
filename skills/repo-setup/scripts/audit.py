@@ -37,6 +37,8 @@ def audit(raw: Path) -> dict:
         item = {"path": str(path.relative_to(target)) if path.is_relative_to(target) else str(path), "kind": kind}
         try:
             if not path.is_file():
+                notes.append(f"Skipped non-regular evidence file: {path}")
+                incomplete = True
                 return
             item["bytes"] = path.stat().st_size
             if kind == "manifest" and path.name == "package.json":
