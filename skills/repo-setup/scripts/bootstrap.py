@@ -54,6 +54,8 @@ def check_path(target: Path) -> None:
     for path in (target, *target.parents):
         if path.is_symlink():
             raise SetupError(f"Symlink in target path: {path}")
+        if path != target and path.exists() and not path.is_dir():
+            raise SetupError(f"Expected a directory: {path}")
     for generated in (".venv", "node_modules", ".git"):
         if (target / generated).is_symlink():
             raise SetupError(f"Refusing external/symlink runtime or Git directory: {target / generated}")
@@ -75,6 +77,8 @@ def load_state(target: Path, recipe: str, name: str) -> dict | None:
         if target.exists() and any(target.iterdir()):
             raise SetupError("Nonempty unrecognized directory. Inspect it and report gaps; do not scaffold or overwrite it.")
         return None
+    if not state_path.is_file():
+        raise SetupError("Setup state must be a regular file; nothing was written.")
     try:
         state = json.loads(state_path.read_text())
     except (OSError, ValueError) as exc:
@@ -112,6 +116,8 @@ def plan_files(target: Path, files: dict[str, bytes]) -> list[tuple[str, str]]:
                 break
             if component.is_symlink():
                 raise SetupError(f"Refusing symlink: {component}")
+            if component != path and component.exists() and not component.is_dir():
+                raise SetupError(f"Expected a directory: {component}")
         if path.exists():
             if not path.is_file():
                 raise SetupError(f"Expected a file: {path}")
@@ -137,6 +143,26 @@ def preflight(recipe: str, install: bool, verify: bool, git: bool) -> None:
         if not re.fullmatch(r"v24\.\d+\.\d+", version):
             raise SetupError(f"This recipe requires Node 24.x, found {version}. Select Node 24 before installing.")
 
+    if (install or verify) and recipe == "typescript-web":
+        version = subprocess.check_output(["npm", "--version"], text=True).strip()
+        if not re.fullmatch(r"11\.\d+\.\d+", version):
+            raise SetupError(f"This recipe requires npm 11.x, found {version!r}. Select npm 11 before setup; nothing was written.")
+    if (install or verify) and recipe in ("python-cli", "fastapi"):
+        # Check an already installed interpreter without discovering another
+        # project, using its virtualenv, downloading Python, or persisting a cache.
+        try:
+            subprocess.check_output(
+                ["uv", "python", "find", "--no-project", "--no-config", "--system",
+                 "--no-python-downloads", "--offline", "--no-cache", "3.12"],
+                text=True, stderr=subprocess.STDOUT,
+            )
+        except subprocess.CalledProcessError as exc:
+            raise SetupError(
+                "This recipe requires an installed Python 3.12 interpreter. "
+                "uv could not find it offline; install or select Python 3.12 separately. "
+                f"Nothing was written. uv reported: {exc.output.strip()}"
+            ) from exc
+
 
 def directory_fd(path: Path) -> int:
     """Open/create the absolute directory one component at a time without links."""
@@ -154,6 +180,29 @@ def directory_fd(path: Path) -> int:
     except BaseException:
         os.close(fd)
         raise
+
+
+def require_verification_lock(target: Path, name: str) -> None:
+    """Check lock presence/type only; review and installed dependencies are separate."""
+    lock = target / name
+    if lock.is_symlink() or not lock.is_file():
+        raise SetupError(f"Verification requires an existing regular {name} (not a symlink). "
+                         "Review the lock and install dependencies with approval before verification.")
+
+
+def git_initialization_needed(target: Path) -> bool:
+    """Recover an empty init attempt, but never rewrite unknown Git metadata."""
+    marker = target / ".git"
+    if not marker.exists() or (marker.is_dir() and not any(marker.iterdir())):
+        return True
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"], cwd=target,
+        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+    )
+    if result.returncode or Path(result.stdout.strip()).resolve() != target.resolve():
+        raise SetupError("Existing Git metadata is not a valid worktree for this target. "
+                         "It was left unchanged; inspect .git before retrying.")
+    return False
 
 
 def exclusive_file(root_fd: int, relative: str, data: bytes) -> None:
@@ -253,9 +302,17 @@ def main() -> int:
             print("No files written. Use --apply to scaffold. Ask approval before any dependency resolution/install; legacy --install also requires --approve-install.")
             return 0
         preflight(args.recipe, args.install, args.verify, args.git)
+        # Preview locks are never scaffolded. Fail before any file recovery or
+        # Git initialization when verification cannot use an existing lock.
+        if args.verify and args.recipe in PREVIEWS:
+            require_verification_lock(target, "uv.lock" if args.recipe == "fastapi" else "bun.lock")
+        initialize_git = args.git and git_initialization_needed(target)
         apply(target, args.recipe, name, files, plan, state)
-        if args.git and not (target / ".git").exists():
+        if initialize_git:
             run(["git", "init", "--initial-branch=main", "--template="], target)
+        if args.git and git_initialization_needed(target):
+            raise SetupError("Git initialization did not create valid repository metadata; "
+                             "generated files were preserved.")
         check_path(target)
         if args.install:
             if args.recipe == "typescript-web":
@@ -267,13 +324,11 @@ def main() -> int:
                 run(["npm", "run", "check"], target, offline=True)
                 run(["npm", "run", "smoke"], target, offline=True)
             elif args.recipe in ("react-web", "bun-monorepo"):
-                if not (target / "bun.lock").is_file():
-                    raise SetupError("Verification requires an approved, reviewed bun.lock and installed dependencies")
+                require_verification_lock(target, "bun.lock")
                 run(["bun", "run", "check"], target, offline=True)
                 run(["bun", "run", "smoke"], target, offline=True)
             else:
-                if not (target / "uv.lock").is_file():
-                    raise SetupError("Verification requires an approved, reviewed uv.lock and installed dependencies")
+                require_verification_lock(target, "uv.lock")
                 run(["uv", "run", "--locked", "--no-sync", "--offline", "python", "scripts/check.py"], target, offline=True)
         print("Scaffold complete." + (" Checks and smoke passed." if args.verify else " Checks were not run; not yet verified ready to code."))
         return 0

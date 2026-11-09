@@ -45,6 +45,19 @@ retrofit. Read referenced instructions and commands yourself. Its JSON separates
 **present**, **missing**, **not verified**, and **not applicable** and proposes
 small additions; present is evidence of declaration only, not correctness.
 Custom task runners and incomplete/skipped files require manual interpretation.
+For package.json, command evidence requires nonempty string commands. Malformed
+script entries and workspace declarations are reported as errors and make the
+inventory incomplete; valid sibling declarations remain visible. Workspace
+arrays and Yarn-style objects with a packages array are recognized, including
+empty arrays. This checks declaration shape, not glob matches or executability.
+For pyproject.toml, it also validates the tables it reads, nonempty string
+project.scripts entries, and uv workspace members/exclude arrays. Malformed
+declarations make the inventory incomplete without hiding valid sibling evidence;
+an empty uv workspace table still counts as a declaration. Python entry points
+are not treated as npm-style check commands. This is not full Python/uv schema,
+entry-point syntax, importability, or workspace membership validation.
+Only recognized uv workspace members/exclude fields are copied into the report;
+other workspace fields are not validated and need manual review.
 The inventory is bounded, skips symlinks and generated directories, and reports
 limits/errors. It intentionally does not read secrets or Git configuration.
 Audit may inspect a project inside a parent repo/workspace; scaffolding refuses it.
@@ -92,13 +105,35 @@ unknown scripts or commands that install dependencies without explicit approval.
 The helper uses uv offline/no-sync and disables Bun auto-install, but these are
 not a sandbox for arbitrary script subprocesses. Dependencies must already be
 available. Preview verification requires a real lock.
+Because preview locks are not bundled, `--verify` requires an existing regular
+`bun.lock` or `uv.lock`, not a symlink, before writing/restoring scaffold files or
+initializing Git. If absent, scaffold without `--verify` and complete the approved
+lock/install procedure first. Baseline bundled-lock recovery is unchanged. Lock
+presence/type is not proof of reviewed contents or installed dependencies; the
+lock is checked again before verification, not protected from concurrent edits.
+
+Before install or verification writes starter files, the helper checks Node 24
+for JS/TS, npm 11 only for `typescript-web`, and an existing Python 3.12 for
+`python-cli` and `fastapi`. Python discovery is offline, cannot download a runtime,
+and ignores unrelated caller projects/configuration. A plan or scaffold-only
+`--apply` does not need recipe tools. Passing preflight does not prove dependency
+compatibility or that project checks will pass. Approval gates remain unchanged.
 
 Optionally add `--git` to initialize local main only when wanted. No commit,
 remote, push, license choice, hooks, CI, deployment, credentials or global setting
 is added. Edited files print `KEEP EDITED` and are never replaced; missing starter
 files are recreated after partial failures. Do not rerun after intentional
-deletions. Reruns require the same recipe/name/revision. Legacy recipe revision
+deletions. Existing non-directory target ancestors or scaffold parent paths stop
+both dry-run and apply before any files are restored or tools are run. Missing
+directories can still be recreated. This preflight does not prevent concurrent
+filesystem replacement or provide transactional rollback.
+Reruns require the same recipe/name/revision. Legacy recipe revision
 stays 1.1.0; previews use 1.2.0-preview. No force flag or automatic upgrade.
+
+With `--git`, an empty `.git` left by interrupted initialization is recovered.
+Nonempty invalid Git metadata stops setup before missing starter files are written.
+Inspect it rather than deleting it to force a rerun. Valid repositories and linked
+worktrees are preserved, and the resulting Git repository is verified.
 
 For JS/TS, inspect and compose the actual installed `install-anti-slop` skill via
 [the bridge](references/anti-slop.md), obtaining approval for its installs.

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "repository": "FireTheDevil/my-pi-skills",
+    "base_commit": "8ed1b8c31404a2d279b7cd80f4634477f12e9108",
+    "base_blob_count": 97,
+    "base_blobs_matched": 97,
+    "branch": "codex/repo-setup-safeguards-2026-11-05",
+    "pull_request": 2
+  },
+  "checked_at_utc": "2026-11-05T23:02:03Z",
+  "runtime": {
+    "platform": "Linux",
+    "python": "3.12.14"
+  },
+  "validation": {
+    "unit_command": "python3 -m unittest discover -s tests -v",
+    "unit_tests": 69,
+    "unit_passed": 69,
+    "unit_skipped": 0,
+    "new_audit_tests": 18,
+    "original_audit_regression_failures": 27,
+    "scaffold_command": "python3 scripts/verify.py --scaffold-only",
+    "scaffold_recipes": [
+      "typescript-web",
+      "python-cli",
+      "react-web",
+      "fastapi",
+      "bun-monorepo"
+    ],
+    "scaffold_result": "all pass: plans, reruns, edited-file preservation and missing-file recovery",
+    "syntax_check": "passed",
+    "diff_check": "passed",
+    "independent_review": "Independent reviewer confirmed audit.py and test_audit.py byte-for-byte, repeated all 69 combined tests with zero failures, and found no blocker. All five scaffold checks independently passed on the earlier main-based checkpoint; final combined scaffolds passed in the implementation run."
+  },
+  "scope": "Validate package.json declaration shapes; preserve valid sibling evidence; do not execute commands, resolve globs or establish runtime readiness.",
+  "limits": [
+    "No dependency installs, lock resolution, preview integration or runtime downloads",
+    "No browser, remote runtime CI, installed Pi/WSL or actual anti-slop acceptance",
+    "No concurrency/symlink-race hardening or directory traversal budget change"
+  ],
+  "files_sha256": {
+    "scripts/audit.py": "cca6ccfcbcdbeb1a513740478b511ab65f3b5184c294e7af7897bc5b494ef355",
+    "tests/test_audit.py": "543160fb0da651227b4f45707c9dd6e1f76457e6d6ed281c5885f33140ebb4a4",
+    "SKILL.md": "4ba31a02ebd5ee1206db934ecd48b5cefb856436a19c8e4d8d5344dbd42bdc67",
+    "INSTALL.md": "877907360ea694121a67e810a656f905ccc09202fa2eea7ed4bfafe4acfdc246"
+  }
+}

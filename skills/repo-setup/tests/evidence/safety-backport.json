@@ -1,0 +1,142 @@
+{
+  "date_utc": "2026-11-05",
+  "source_commit": "28db4fee2e741146e86b0b4c83d1bd34eed1b09a",
+  "runtime": {
+    "python": "3.12.14",
+    "uv": "0.13.5",
+    "node": "24.22.1",
+    "npm": "11.9.0",
+    "git": "2.52.0",
+    "platform": "Linux"
+  },
+  "scope": "Git metadata recovery and declared runtime preflight; newer previews, audit, install approval gates, offline verification, template bytes, pins, locks and recipe revisions preserved.",
+  "bootstrap_sha256": "c30aa24b2eab3d3caf6a4131b6e8b84487c916842d89f74291e0164244ffc4a9",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "passed": 51,
+      "skipped": 0
+    },
+    {
+      "command": "python3 scripts/verify.py --scaffold-only",
+      "result": {
+        "status": "scaffold-only passed; runtime not verified",
+        "results": [
+          {
+            "recipe": "typescript-web",
+            "dry_run": "read-only",
+            "scaffold": "passed",
+            "rerun": "byte-identical",
+            "edited_files": "preserved",
+            "missing_files": "recreated",
+            "install_checks_startup": "not verified"
+          },
+          {
+            "recipe": "python-cli",
+            "dry_run": "read-only",
+            "scaffold": "passed",
+            "rerun": "byte-identical",
+            "edited_files": "preserved",
+            "missing_files": "recreated",
+            "install_checks_startup": "not verified"
+          },
+          {
+            "recipe": "react-web",
+            "dry_run": "read-only",
+            "scaffold": "passed",
+            "rerun": "byte-identical",
+            "edited_files": "preserved",
+            "missing_files": "recreated",
+            "install_checks_startup": "not verified"
+          },
+          {
+            "recipe": "fastapi",
+            "dry_run": "read-only",
+            "scaffold": "passed",
+            "rerun": "byte-identical",
+            "edited_files": "preserved",
+            "missing_files": "recreated",
+            "install_checks_startup": "not verified"
+          },
+          {
+            "recipe": "bun-monorepo",
+            "dry_run": "read-only",
+            "scaffold": "passed",
+            "rerun": "byte-identical",
+            "edited_files": "preserved",
+            "missing_files": "recreated",
+            "install_checks_startup": "not verified"
+          }
+        ]
+      }
+    },
+    {
+      "command": "python3 scripts/verify.py --recipe python-cli --approve-install",
+      "result": {
+        "status": "passed",
+        "results": [
+          {
+            "recipe": "python-cli",
+            "fresh_setup": "passed",
+            "clean_locked_install": "passed",
+            "rerun": "byte-identical",
+            "negative_checks": [
+              "format",
+              "lint",
+              "type",
+              "test"
+            ],
+            "startup": "passed"
+          }
+        ]
+      }
+    },
+    {
+      "command": "python3 scripts/verify.py --recipe typescript-web --approve-install",
+      "result": {
+        "status": "passed",
+        "results": [
+          {
+            "recipe": "typescript-web",
+            "fresh_setup": "passed",
+            "clean_locked_install": "passed",
+            "rerun": "byte-identical",
+            "negative_checks": [
+              "format",
+              "lint",
+              "type",
+              "test"
+            ],
+            "startup": "passed"
+          }
+        ]
+      }
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "check": "Asset bytes compared with source commit",
+      "unchanged_files": 71
+    },
+    {
+      "check": "Independent review",
+      "result": "No blocking correctness or safety issue; 16 preflight tests repeated successfully."
+    }
+  ],
+  "notes": [
+    "Installation/verification used explicitly scoped writable npm and uv caches.",
+    "Both baseline integrations include fresh and clean locked installs, checks, startup, byte-identical reruns and deliberate format/lint/type/test failures.",
+    "Python source distribution and wheel build passed; TypeScript production build and Vite HTTP/module smoke passed.",
+    "Harmless npm/uv shim probes confirmed failed prerequisites do not create new projects or restore missing README files.",
+    "No dependency pins, locks or recipe revisions changed."
+  ],
+  "not_verified": [
+    "Preview dependency resolution, locks or runtime integration",
+    "Pi discovery and installed WSL source",
+    "Actual installed anti-slop composition",
+    "Browser interaction",
+    "Remote CI"
+  ]
+}

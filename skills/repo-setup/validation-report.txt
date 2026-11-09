@@ -1,4 +1,35 @@
-REPO-SETUP EXPANDED PREVIEW — CURRENT LOCAL CHECKS
+REPO-SETUP SAFEGUARD BACKPORT — CURRENT LOCAL CHECKS
+Date: 5 November 2026 UTC (6 November in Auckland)
+Base: 28db4fee2e741146e86b0b4c83d1bd34eed1b09a
+
+- Added npm 11 and offline Python 3.12 preflight before starter writes; Python
+  coverage includes FastAPI, while Bun previews do not require npm
+- Recover empty Git metadata, refuse invalid metadata before writes, preserve
+  valid repositories/linked worktrees, and verify initialization
+- Preserved audit, all preview recipes, explicit installation approval gates,
+  offline verification, assets, dependency pins/locks and recipe revisions
+- All 51 offline safety tests passed with zero skips; all five scaffold paths
+  passed dry-run, rerun, edited-file and partial-recovery checks
+- Both locked baseline recipes passed fresh and clean-copy installations,
+  formatting, lint, types, behavior tests, build, startup and byte-identical reruns
+- Deliberate format/lint/type/test defects failed the expected checks; restored
+  starters returned to green with identical source bytes
+- Independent review found no blocking issue and repeated 16 preflight tests
+- Linux Python 3.12.14, uv 0.13.5, Node 24.22.1, npm 11.9.0, Git 2.52.0;
+  dependency caches were scoped to writable temporary workspace storage
+- No preview runtime, browser interaction, installed Pi/WSL, installed anti-slop
+  or remote CI result is claimed. Preview recipes remain unverified previews.
+
+Machine-readable results: tests/evidence/safety-backport.json
+Reproduction (run from the skill directory; approve baseline installs first):
+python3 -m unittest discover -s tests -v
+python3 scripts/verify.py --scaffold-only
+python3 scripts/verify.py --recipe python-cli --approve-install
+python3 scripts/verify.py --recipe typescript-web --approve-install
+
+The prior records below are historical and retain their original scope.
+
+REPO-SETUP EXPANDED PREVIEW — PRIOR LOCAL CHECKS
 
 - Added React/Vite/Bun, FastAPI/uv and Bun workspace source scaffolds
 - New recipe revision: 1.2.0-preview; no generated locks or installed evidence

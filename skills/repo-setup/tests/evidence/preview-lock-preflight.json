@@ -1,0 +1,89 @@
+{
+  "date_utc": "2026-11-07",
+  "source_commit": "d71e74dad72396c523a1f57b99e9e9ee05bad185",
+  "source_blobs_verified": 101,
+  "change": "Require an existing regular preview lock before scaffold writes, file recovery or Git initialization when verification is requested. Recheck before invoking verification.",
+  "reproduction": {
+    "recipe_files_written_before_missing_lock_failure": {
+      "react-web": 15,
+      "fastapi": 11,
+      "bun-monorepo": 19
+    },
+    "runtime_probes": "inert recording shims; no project commands or dependency activity"
+  },
+  "verification": {
+    "baseline_unit_tests": 85,
+    "final_unit_tests": 96,
+    "final_unit_tests_skipped": 0,
+    "new_tests": 11,
+    "negative_control": "new 11-test suite against source bootstrap failed with 25 assertions/subtest failures",
+    "scaffold_recipes": [
+      {
+        "recipe": "typescript-web",
+        "dry_run": "read-only",
+        "scaffold": "passed",
+        "rerun": "byte-identical",
+        "edited_files": "preserved",
+        "missing_files": "recreated",
+        "install_checks_startup": "not verified"
+      },
+      {
+        "recipe": "python-cli",
+        "dry_run": "read-only",
+        "scaffold": "passed",
+        "rerun": "byte-identical",
+        "edited_files": "preserved",
+        "missing_files": "recreated",
+        "install_checks_startup": "not verified"
+      },
+      {
+        "recipe": "react-web",
+        "dry_run": "read-only",
+        "scaffold": "passed",
+        "rerun": "byte-identical",
+        "edited_files": "preserved",
+        "missing_files": "recreated",
+        "install_checks_startup": "not verified"
+      },
+      {
+        "recipe": "fastapi",
+        "dry_run": "read-only",
+        "scaffold": "passed",
+        "rerun": "byte-identical",
+        "edited_files": "preserved",
+        "missing_files": "recreated",
+        "install_checks_startup": "not verified"
+      },
+      {
+        "recipe": "bun-monorepo",
+        "dry_run": "read-only",
+        "scaffold": "passed",
+        "rerun": "byte-identical",
+        "edited_files": "preserved",
+        "missing_files": "recreated",
+        "install_checks_startup": "not verified"
+      }
+    ],
+    "independent_review": "No blocker; repeated all 96 unit tests and all five scaffold checks; diff whitespace passed",
+    "syntax": "all scripts and test Python sources parsed",
+    "unchanged_assets_and_manifests": 71
+  },
+  "runtime": {
+    "platform": "Linux",
+    "python": "3.12.14",
+    "uv": "0.13.5",
+    "git": "2.52.0"
+  },
+  "changed_file_sha256": {
+    "skills/repo-setup/scripts/bootstrap.py": "3c3471c14b78da737d898a1d44c711ebe139104dcdcc1e4782de83dc22377e98",
+    "skills/repo-setup/tests/test_verify_lock_preflight.py": "9e3d3dedb8586589014aab4516b68fe38cd19fd2e0abd3e72a1b79edb46a6db5",
+    "skills/repo-setup/INSTALL.md": "1f90f30cdd68b40910b6917fe41703273234d5b3096a01e7c2726aea16bcec1a",
+    "skills/repo-setup/SKILL.md": "c292dfbdb77b051a2d3c613c5bacd6f363f6bc1261ee0b4d060e407315531a8d"
+  },
+  "limits": [
+    "Lock fixtures and command shims do not validate lock contents, operator approval, installed dependencies or actual preview runtime behavior.",
+    "Preflight is not a transaction against concurrent filesystem changes.",
+    "No dependency installation/resolution, full baseline integrations, browser, installed Pi/WSL or actual anti-slop acceptance was performed in this checkpoint.",
+    "Templates, dependencies, bundled locks and installed copies are unchanged."
+  ]
+}

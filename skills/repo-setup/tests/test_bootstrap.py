@@ -43,6 +43,83 @@ class BootstrapTests(unittest.TestCase):
         return {str(p.relative_to(self.target)): p.read_bytes()
                 for p in self.target.rglob("*") if p.is_file()}
 
+    def test_empty_git_directory_recovers_after_interrupted_init(self):
+        self.scaffold()
+        (self.target / ".git").mkdir()
+        result = self.run_setup("--apply", "--git")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        git = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"], cwd=self.target,
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(git.returncode, 0, git.stderr)
+        self.assertEqual(Path(git.stdout.strip()).resolve(), self.target.resolve())
+
+    def test_invalid_git_directory_is_refused_before_file_creation(self):
+        self.scaffold()
+        (self.target / ".git").mkdir()
+        (self.target / ".git/config").write_text("# preserve this partial configuration\n")
+        (self.target / "README.md").unlink()
+        before = self.snapshot()
+        result = self.run_setup("--apply", "--git")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Git metadata", result.stderr)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_invalid_git_file_is_refused_before_file_creation(self):
+        self.scaffold()
+        (self.target / ".git").write_text("gitdir: missing-git-directory\n")
+        (self.target / "README.md").unlink()
+        before = self.snapshot()
+        result = self.run_setup("--apply", "--git")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Git metadata", result.stderr)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_valid_git_repository_is_unchanged_on_rerun(self):
+        self.scaffold()
+        result = self.run_setup("--apply", "--git")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        before = self.snapshot()
+        result = self.run_setup("--apply", "--git")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_valid_linked_git_worktree_is_preserved(self):
+        self.scaffold()
+        origin = self.root / "origin"
+        worktree = self.root / "linked"
+        subprocess.run(["git", "init", "--initial-branch=main", "--template=", str(origin)], check=True, capture_output=True)
+        subprocess.run(["git", "-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "--allow-empty", "-m", "test"], cwd=origin, check=True, capture_output=True)
+        subprocess.run(["git", "worktree", "add", "--detach", str(worktree)], cwd=origin, check=True, capture_output=True)
+        shutil.copytree(self.target, worktree, dirs_exist_ok=True)
+        before = {str(p.relative_to(worktree)): p.read_bytes() for p in worktree.rglob("*") if p.is_file()}
+        result = self.run_setup("--apply", "--git", "--name", "demo", target=worktree)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue((worktree / ".git").is_file())
+        self.assertEqual(before, {str(p.relative_to(worktree)): p.read_bytes() for p in worktree.rglob("*") if p.is_file()})
+
+    def test_git_init_success_without_metadata_is_not_reported_complete(self):
+        args = [str(SCRIPT), str(self.target), "--recipe", "python-cli", "--apply", "--git"]
+        with patch.object(sys, "argv", args), patch.object(BOOTSTRAP, "run") as run:
+            self.assertEqual(BOOTSTRAP.main(), 1)
+        run.assert_called_once_with(["git", "init", "--initial-branch=main", "--template="], self.target)
+        self.assertTrue((self.target / "README.md").is_file())
+        self.assertFalse((self.target / ".git").exists())
+
+    def test_invalid_git_metadata_preserves_preview_rerun_files(self):
+        for recipe in BOOTSTRAP.PREVIEWS:
+            with self.subTest(recipe=recipe):
+                self.target = self.root / recipe
+                self.scaffold(recipe=recipe)
+                (self.target / ".git").write_text("gitdir: missing-git-directory\n")
+                (self.target / "README.md").unlink()
+                before = self.snapshot()
+                result = self.run_setup("--apply", "--git", recipe=recipe)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("Git metadata", result.stderr)
+                self.assertEqual(self.snapshot(), before)
+
     def test_refuses_git_environment_redirection(self):
         foreign = self.root / "foreign-git"
         with patch.dict(os.environ, {"GIT_DIR": str(foreign)}):

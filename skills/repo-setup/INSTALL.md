@@ -19,6 +19,19 @@ Python 3.10+; TOML audit parsing needs 3.11+. Python recipes need installed Pyth
 3.12 and uv; new JS/TS previews propose Bun 1.3.11 and Node 24.x. The legacy npm
 recipe needs Node 24.x/npm 11.x. No runtime is automatically installed.
 
+Before `--install` or `--verify` writes starter files, including missing files on
+reruns, the helper checks Node 24 for JS/TS, npm 11 for the legacy npm recipe,
+and an existing Python 3.12 for both Python recipes. Python discovery is offline,
+cannot download a runtime, and ignores unrelated caller projects/configuration.
+Bun previews do not require npm. Plans and scaffold-only `--apply` do not need
+recipe tools. Passing preflight does not establish installation or runtime readiness.
+
+An existing `.repo-setup.json` must be a regular file, not a symlink, FIFO,
+socket or directory. Plans and apply reject these entries before reading state,
+probing runtimes or restoring scaffold files. Inspect an invalid entry manually;
+the helper does not delete or replace it. This type check does not validate state
+contents or protect against concurrent filesystem replacement.
+
 ## Use
 
 Examples in Pi:
@@ -45,8 +58,36 @@ python3 "$SKILL_DIR/scripts/bootstrap.py" /absolute/new-app --recipe react-web -
 
 Audit only reads bounded evidence and prints JSON; it never runs unknown project
 scripts. Plans do not write. Apply writes scaffold files, not dependencies.
+Check `complete_inventory` and per-file `error`/`errors` in audit JSON: malformed
+declarations return a partial report, not a successful readiness verdict. A
+successful audit process exit only means the report was produced. `present`
+means declaration evidence, never proof that commands or workspace globs work.
+Recognized evidence paths that are not regular files, such as FIFOs and sockets,
+are skipped without opening them and identified in `notes`. They make the report
+incomplete, so absent evidence is `not verified` rather than a recommendation to
+add a replacement. Valid sibling evidence remains visible. Directories occupying
+known manifest, lock, instruction or workspace filenames also make the inventory
+incomplete; their descendants are
+still inspected, without treating the conflicting directory as file evidence.
+Ordinary source directories and configuration-prefix directory names are not
+treated as evidence-file conflicts. This does not infer the intended use of a
+directory or authorize renaming, deleting or replacing it. Generated directories
+and unrecognized filenames remain outside the inventory; this is not a complete
+filesystem check or protection against concurrent file replacement.
+Python audit validation covers the tables it reads, nonempty string project
+entry points and uv workspace members/exclude arrays, including empty workspace
+tables. Valid sibling evidence remains visible in partial reports. It does not
+validate the full Python/uv schema, import entry points or resolve workspace globs.
+Only recognized uv workspace members/exclude fields appear in the report; review
+other workspace fields manually. A declared table still counts when these fields
+are absent.
 Preview --install is blocked until reviewed locks exist through the separately
 approved recipe procedure. --verify uses existing dependencies without sync.
+For previews, --verify requires an existing regular bun.lock or uv.lock, not a
+symlink, before any scaffold files are written or restored and before Git init.
+If missing, scaffold separately without --verify, then follow the approved
+lock/install procedure. Bundled baseline locks can still be restored on rerun.
+This file check does not validate lock contents, approval or installed dependencies.
 Do not label preview scaffolds ready-to-code.
 
 For a locked baseline, only **after explicit installation approval**:
@@ -65,6 +106,11 @@ Do not rerun after intentional deletions. Nonempty unrecognized repositories,
 parent repositories/workspaces and symlinks stop scaffolding. Use audit instead.
 Legacy revision stays 1.1.0; preview revision is 1.2.0-preview. No force overwrite,
 automatic upgrade, global install or reset exists.
+
+With `--git`, an empty `.git` left by interrupted initialization is recovered.
+Nonempty invalid Git metadata is refused before missing starter files are written;
+inspect that metadata instead of deleting it to force setup. Existing valid
+repositories and linked worktrees are preserved, and initialization is verified.
 
 Read the installed install-anti-slop skill before JS/TS composition. Ask approval
 for its dependencies and rerun checks/smoke afterward. Baseline Oxlint alone is
