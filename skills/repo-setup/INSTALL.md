@@ -65,7 +65,13 @@ means declaration evidence, never proof that commands or workspace globs work.
 Recognized evidence paths that are not regular files, such as FIFOs and sockets,
 are skipped without opening them and identified in `notes`. They make the report
 incomplete, so absent evidence is `not verified` rather than a recommendation to
-add a replacement. Valid sibling evidence remains visible. Generated directories
+add a replacement. Valid sibling evidence remains visible. Directories occupying
+known manifest, lock, instruction or workspace filenames also make the inventory
+incomplete; their descendants are
+still inspected, without treating the conflicting directory as file evidence.
+Ordinary source directories and configuration-prefix directory names are not
+treated as evidence-file conflicts. This does not infer the intended use of a
+directory or authorize renaming, deleting or replacing it. Generated directories
 and unrecognized filenames remain outside the inventory; this is not a complete
 filesystem check or protection against concurrent file replacement.
 Python audit validation covers the tables it reads, nonempty string project

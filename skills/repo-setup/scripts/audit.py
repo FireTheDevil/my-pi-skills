@@ -156,6 +156,9 @@ def audit(raw: Path) -> dict:
                 incomplete = True
             elif directory not in SKIP:
                 kept.append(directory)
+                if directory in INSTRUCTIONS | MANIFESTS | LOCKS | WORKSPACES or directory.endswith(".code-workspace"):
+                    notes.append(f"Skipped non-regular evidence file: {base / directory}")
+                    incomplete = True
         dirs[:] = kept
         for name in sorted(files):
             count += 1
